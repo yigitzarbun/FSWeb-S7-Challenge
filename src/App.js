@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
+import styled from "styled-components";
 import * as Yup from "yup";
 import axios from "axios";
 import { orderFormSchema } from "./validations/OrderFormValidation";
@@ -7,10 +8,38 @@ import Header from "./Components/Header";
 import Mainpage from "./Components/Mainpage";
 import Form from "./Components/Form";
 import Basket from "./Components/Basket";
+import Empty from "./Components/Empty";
 import Footer from "./Components/Footer";
+import Admin from "./Components/Admin";
+
+// STYLE
+const StyledSuccessContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 2vw;
+  margin-bottom: 4vh;
+`;
+
+const StyledSuccessText = styled.p`
+  padding: 0.5rem;
+  background-color: #03c988;
+  color: white;
+  font-weight: bold;
+  border-radius: 20px;
+`;
+
+const StyledBasketSpan = styled.span`
+  color: #eb455f;
+  background-color: white;
+  border-radius: 20px;
+  padding: 0 0.5rem;
+  margin: 0 0.5rem;
+  font-weight: bold;
+`;
 
 const App = () => {
-  // STATES
+  // STATES -------------------------------------------------
 
   // Order Form Data
   const [formData, setFormData] = useState({
@@ -30,7 +59,7 @@ const App = () => {
   // Order Button
   const [orderButtonDisabled, setOrderButtonDisabled] = useState(true);
 
-  // Toppings Object
+  // Toppings Object (Form.js dosyasındaki handleTopping onChange event'e göre her malezemeyi True / False yapar.)
   const [toppings, setToppings] = useState({
     pepperoni: false,
     sausage: false,
@@ -52,7 +81,7 @@ const App = () => {
   const [orderFormErrors, setOrderFormErrors] = useState({
     sizeDropdown: "",
     sauce: "",
-    selectedToppings: "test",
+    selectedToppings: "",
     glutenFreeCrust: "",
     specialText: "",
     name: "",
@@ -66,13 +95,13 @@ const App = () => {
   // Order Value (pizza price * order quantity)
   const [sum, setSum] = useState(12);
 
-  // Extra Materials Value
-  const [extraSum, setExtraSum] = useState(null);
+  // Sipariş toplam ücretini (formData bazlı sum state'ten almak yerine), submit esnasında kendi state'ine transfer ediyor.
+  const [totalValue, setTotalValue] = useState(null);
 
   // Toppings Array
   const [toppingArray, setToppingArray] = useState([]);
 
-  // HANDLE CHANGES
+  // HANDLE CHANGES -------------------------------------------------
 
   // Order Form
   const handleChange = (event) => {
@@ -81,11 +110,12 @@ const App = () => {
     if (type === "checkbox") {
       newValue = checked;
     }
+
     checkOrderFormErrors(name, newValue);
     setFormData({ ...formData, [name]: newValue });
   };
 
-  // Toppings
+  // Toppings (Toppings objesinin state'ini günceller. Malzemeleri True / False olarak değiştirir.)
   const handleTopping = (event) => {
     const { name, value, type, checked } = event.target;
     let newValue = value;
@@ -94,8 +124,7 @@ const App = () => {
     }
     setToppings({ ...toppings, [name]: newValue });
   };
-
-  // Topping Array
+  // Topping Array (Toppings objesinde True olan malzemeleri, toppingsArray'e ekler veya çıkarır)
   const handleToppingArray = () => {
     for (let i = 0; i < Object.keys(toppings).length; i++) {
       if (
@@ -118,66 +147,101 @@ const App = () => {
     }
   };
 
-  // Order Value
-  const handleOrderQuantitySum = (event) => {
-    const { value } = event.target;
-    setSum(value * 12);
-  };
-
-  // Toppings Array
+  // Toppings Array (toppingsArray uzunluğunu formData'daki selectedToppings'e gönderir)
   const handleSelectedToppingsArray = () => {
-    setFormData({ ...formData, selectedToppings: toppingArray });
+    setFormData({
+      ...formData,
+      selectedToppings: toppingArray,
+    });
+    checkOrderFormErrors("selectedToppings", toppingArray);
   };
 
-  // Extra Materials
-  const handleOrderCrustSum = (event) => {
-    if (event.target.checked === true) {
-      setExtraSum(1);
-    } else if (event.target.checked !== true) {
-      setExtraSum(0);
-    }
+  // Order Value
+  const handleOrderQuantitySum = () => {
+    formData.glutenFreeCrust !== true
+      ? setSum(formData.orderQuantity * 12)
+      : setSum(formData.orderQuantity * 12 + formData.orderQuantity * 1);
   };
-
+  // Clear Order Form
+  const handleClear = () => {
+    setFormData({
+      sizeDropdown: "",
+      sauce: "",
+      selectedToppings: [],
+      glutenFreeCrust: "",
+      specialText: "",
+      name: "",
+      address: "",
+      orderQuantity: "1",
+    });
+    setToppings({
+      pepperoni: false,
+      sausage: false,
+      canadianBacon: false,
+      spicyItalianSausage: false,
+      grilledChicken: false,
+      onions: false,
+      greenPepper: false,
+      dicedTomatos: false,
+      blackOlives: false,
+      roastedGarlic: false,
+      artichokeHearts: false,
+      threeCheese: false,
+      pineapple: false,
+      extraCheese: false,
+    });
+  };
   // Submit Order Form
   const handleSubmit = (event) => {
     event.preventDefault();
-    axios
-      .post("https://reqres.in/api/users", formData)
-      .then((response) => {
-        setAdminOrderDetails(response.data);
-        setOrderStatus(true);
-        setFormData({
-          sizeDropdown: "",
-          sauce: "",
-          selectedToppings: [],
-          glutenFreeCrust: "",
-          specialText: "",
-          name: "",
-          address: "",
-          orderQuantity: null,
+    if (orderButtonDisabled === false) {
+      axios
+        .post("https://reqres.in/api/users", formData)
+        .then((response) => {
+          setAdminOrderDetails(response.data);
+          setTotalValue(sum);
+          setOrderStatus(true);
+          setFormData({
+            sizeDropdown: "",
+            sauce: "",
+            selectedToppings: null,
+            glutenFreeCrust: "",
+            specialText: "",
+            name: "",
+            address: "",
+            orderQuantity: null,
+          });
+          setTimeout(() => {
+            document.getElementById("success-message").textContent = "";
+          }, 5000);
+        })
+        .catch((error) => {
+          console.log(error);
         });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    }
   };
 
-  // USE EFFECTs
+  // USE EFFECTs -------------------------------------------------
 
-  // Toppings Array
+  // Toppings Array (Toppings'de değişiklik olduğunda toppingArray'e malzeme ekler / çıkarır)
   useEffect(handleToppingArray, [toppings]);
 
-  // Selected Toppings Array
+  // Selected Toppings Array (toppingArray'de değiliklik olduğunda, formData'daki selectedToppings'i değiştirir)
   useEffect(handleSelectedToppingsArray, [toppingArray]);
 
-  // Form Data (if form data is valid, removes disability of Submit Order Button)
+  // Form Data (Form validasyonu geçerse, sipariş oluştur butonu geçerli olacak)
   useEffect(() => {
     orderFormSchema
       .isValid(formData)
       .then((result) => setOrderButtonDisabled(!result));
   }, [formData]);
 
-  // VALIDATION ERRORS
+  /* Form Data'da değişiklik olduğunda sipariş miktarını ve glutensiz hamur özelliğini 
+  dikkate alarak toplam ücreti hesaplıyor. Fakat, submit yapıldığıdna formData 0'landığı için, 
+  sipariş toplam ücretini Basket.js belgesine totalValue isimli state taşıyor. */
+  useEffect(handleOrderQuantitySum, [formData]);
+
+  // VALIDATION ERRORS -------------------------------------------------
   function checkOrderFormErrors(name, value) {
     Yup.reach(orderFormSchema, name)
       .validate(value)
@@ -195,7 +259,7 @@ const App = () => {
       });
   }
 
-  // UI
+  // UI -------------------------------------------------
   return (
     <>
       <Header />
@@ -214,10 +278,9 @@ const App = () => {
             handleSubmit={handleSubmit}
             adminOrderDetails={adminOrderDetails}
             sum={sum}
-            extraSum={extraSum}
             handleOrderQuantitySum={handleOrderQuantitySum}
-            handleOrderCrustSum={handleOrderCrustSum}
             handleToppingArray={handleToppingArray}
+            handleClear={handleClear}
           />
         </Route>
         <Route path="/basket">
@@ -225,17 +288,29 @@ const App = () => {
             toppings={toppings}
             adminOrderDetails={adminOrderDetails}
             orderStatus={orderStatus}
-            sum={sum}
-            extraSum={extraSum}
+            totalValue={totalValue}
+          />
+        </Route>
+        <Route path="/empty">
+          <Empty />
+        </Route>
+        <Route path="/admin">
+          <Admin
+            adminOrderDetails={adminOrderDetails}
+            orderStatus={orderStatus}
+            totalValue={totalValue}
           />
         </Route>
       </Switch>
-      <ul>
-        {toppingArray.map((topping) => (
-          <li key={topping}>{topping}</li>
-        ))}
-      </ul>
-      <p>{orderFormErrors.selectedToppings}</p>
+      {adminOrderDetails && (
+        <StyledSuccessContainer id="success-message">
+          <StyledSuccessText>
+            Check your order details from{" "}
+            <StyledBasketSpan>Basket </StyledBasketSpan>or create a new order.
+          </StyledSuccessText>
+        </StyledSuccessContainer>
+      )}
+
       <Footer />
     </>
   );

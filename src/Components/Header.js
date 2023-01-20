@@ -19,10 +19,17 @@ const StyledHeaderLogo = styled.h2`
 const StyledHeaderLinksContainer = styled.div`
   display: flex;
   column-gap: 2vw;
+  @media (max-width: 630px) {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1vh;
+    margin: 1vh 0;
+  }
 `;
 
 const StyledHeaderLinks = styled.p`
   color: black;
+  max-font-size: 2vw;
   border: 0.3rem solid #eb455f;
   border-radius: 20px;
   padding: 0.5vw 4vw;
@@ -34,6 +41,19 @@ const StyledHeaderLinks = styled.p`
     font-weight: bold;
     border: 0.3rem solid black;
     text-decoration: underline #eb455f;
+  }
+  @media (max-width: 720px) {
+    font-size: 1rem;
+  }
+  @media (max-width: 630px) {
+    border: 0.1rem solid #eb455f;
+  }
+  @media (max-width: 300px) {
+    border: 0.1rem solid #eb455f;
+    font-size: 0.7rem;
+    padding: 0 1rem;
+    min-width: 30vw;
+    text-align: center;
   }
 `;
 

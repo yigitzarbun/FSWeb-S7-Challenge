@@ -9,7 +9,7 @@ const StyledBasketContainer = styled.div`
   margin: 0 auto;
   border: 0.3rem solid #eb455f;
   border-radius: 20px;
-  margin-bottom: 15vh;
+  margin-bottom: 30vh;
   align-items: center;
 `;
 
@@ -64,7 +64,17 @@ const StyledMainOrderDetailsContainer = styled.div`
 `;
 
 const StyledPlaceOrderButton = styled.button`
-  padding: 1rem;
+  color: black;
+  border: 0.3rem solid black;
+  border-radius: 20px;
+  padding: 0.5vw 4vw;
+  font-weight: bold;
+  &:hover {
+    background-color: #eb455f;
+    color: white;
+    font-weight: bold;
+    border: 0.3rem solid black;
+  }
 `;
 
 const StyledNoOrdersYetContainer = styled.div`
@@ -74,9 +84,28 @@ const StyledNoOrdersYetContainer = styled.div`
   row-gap: 2vh;
 `;
 
-export default function Basket(props) {
-  const { toppings, adminOrderDetails, orderStatus, sum } = props;
+const StyledNewOrderContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 3vh 0;
+`;
 
+const StyledNewOrderButton = styled.button`
+  color: white;
+  border: 0.3rem solid black;
+  border-radius: 20px;
+  padding: 0.5vw 4vw;
+  font-weight: bold;
+  background-color: #eb455f;
+  &:hover {
+    color: black;
+    background-color: white;
+    font-weight: bold;
+    border: 0.3rem solid #eb455f;
+  }
+`;
+export default function Basket(props) {
+  const { adminOrderDetails, orderStatus, totalValue } = props;
   return (
     <StyledBasketContainer>
       <StyledTopTitleContainer>
@@ -97,12 +126,11 @@ export default function Basket(props) {
         </StyledOrderStatusContainer>
         {!orderStatus && (
           <StyledNoOrdersYetContainer>
-            <p>
-              You didn't place any orders yet. Visit your order form to place an
-              order.
-            </p>
+            <p>You haven't placed an order yet.</p>
             <Link to="/pizza">
-              <StyledPlaceOrderButton>Order Form</StyledPlaceOrderButton>
+              <StyledPlaceOrderButton data-cy="order-now-button">
+                Order Now
+              </StyledPlaceOrderButton>
             </Link>
           </StyledNoOrdersYetContainer>
         )}
@@ -118,12 +146,15 @@ export default function Basket(props) {
             </StyledOrderSection>
             <StyledOrderDetailsHeadings>Toppings:</StyledOrderDetailsHeadings>
             <ul>
-              {Object.entries(toppings).map(([key, value]) => (
+              {adminOrderDetails.selectedToppings.map((topping) => (
+                <li>{topping}</li>
+              ))}
+              {/*Object.entries(toppings).map(([key, value]) => (
                 <li>
                   {key.toLocaleUpperCase()} :{" "}
                   {toppings[key] === true ? "Yes" : "No"}
                 </li>
-              ))}
+              ))*/}
             </ul>
 
             {adminOrderDetails.glutenFreeCrust ? (
@@ -153,9 +184,18 @@ export default function Basket(props) {
             </StyledOrderSection>
             <StyledOrderSection>
               <StyledOrderDetailsHeadings>Total: </StyledOrderDetailsHeadings>
-              <p>${sum}</p>
+              <p>${totalValue}</p>
             </StyledOrderSection>
           </StyledOrderDetailsContainer>
+        )}
+        {adminOrderDetails && (
+          <StyledNewOrderContainer>
+            <Link to="/pizza">
+              <StyledNewOrderButton data-cy="place-new-order-button">
+                New Order
+              </StyledNewOrderButton>
+            </Link>
+          </StyledNewOrderContainer>
         )}
       </StyledMainOrderDetailsContainer>
     </StyledBasketContainer>

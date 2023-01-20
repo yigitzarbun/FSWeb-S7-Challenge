@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const StyledFooterContainer = styled.div`
   display: flex;
@@ -7,6 +8,10 @@ const StyledFooterContainer = styled.div`
   column-gap: 5vw;
   align-items: center;
   background-color: #eb455f;
+  @media (max-width: 550px) {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 const StyledFooterLogo = styled.h2`
@@ -17,6 +22,11 @@ const StyledFooterLogo = styled.h2`
 const StyledFooterLinksContainer = styled.div`
   display: flex;
   column-gap: 2vw;
+  @media (max-width: 400px) {
+    display: flex;
+    flex-direction: column;
+    row-gap: 2vh;
+  }
 `;
 
 const StyledFooterLinks = styled.p`
@@ -25,6 +35,7 @@ const StyledFooterLinks = styled.p`
   border-radius: 20px;
   padding: 0.5vw 4vw;
   font-weight: bold;
+  text-decoration: underline #eb455f;
   &:hover {
     background-color: #eb455f;
     color: white;
@@ -39,6 +50,9 @@ export default function Footer() {
       <StyledFooterLinksContainer>
         <StyledFooterLinks>FAQ</StyledFooterLinks>
         <StyledFooterLinks>Contact Us</StyledFooterLinks>
+        <Link to="/admin">
+          <StyledFooterLinks>Admin</StyledFooterLinks>
+        </Link>
       </StyledFooterLinksContainer>
     </StyledFooterContainer>
   );

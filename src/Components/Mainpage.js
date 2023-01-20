@@ -7,10 +7,10 @@ const StyledMainPageContainer = styled.div`
   flex-direction: column;
 `;
 
+// Hero Banner
 const StyledHero = styled.div`
   display: flex;
   flex-direction: column;
-  height: 50vh;
   background-image: url("./images/Pizza.png");
   background-repeat: no-repeat;
   background-size: cover;
@@ -27,6 +27,7 @@ const StyledHeroTitleContainer = styled.div`
   align-content: center;
   justify-content: center;
   row-gap: 1vh;
+  padding-bottom: 4vh;
 `;
 
 const StyledHeroTitle = styled.h1`
@@ -55,16 +56,24 @@ const StyledHeroButton = styled.button`
   }
 `;
 
+// Main Section
 const StyledCityText = styled.h4`
   margin-left: 5%;
 `;
 const StyledAllRestaurantsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   width: 90%;
   margin: 5vh auto;
   column-gap: 2vw;
   row-gap: 2vh;
+  box-sizing: border-box;
+  @media (max-width: 500px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 const StyledRestaurantContainer = styled.div`
@@ -73,8 +82,15 @@ const StyledRestaurantContainer = styled.div`
   width: 30%;
   text-align: center;
   align-items: center;
+  justify-content: space-between;
   border: 0.3rem solid #eb455f;
   border-radius: 20px;
+  @media (max-width: 720px) {
+    width: 40%;
+  }
+  @media (max-width: 500px) {
+    width: 60%;
+  }
 `;
 
 const StyledRestaurantImage = styled.img`
@@ -121,6 +137,20 @@ const StyledRestaurantButton = styled.button`
   }
 `;
 
+const StyledPizzaHutButton = styled.button`
+  color: black;
+  border: 0.2rem solid #eb455f;
+  border-radius: 20px;
+  padding: 0.3vw 3vw;
+  margin: 2vh 0;
+  font-weight: bold;
+  &:hover {
+    background-color: #eb455f;
+    color: white;
+    font-weight: bold;
+    border: 0.3rem solid black;
+  }
+`;
 export default function Mainpage() {
   return (
     <StyledMainPageContainer>
@@ -131,7 +161,9 @@ export default function Mainpage() {
             <StyledSpan>delivered While (coding)</StyledSpan>
           </StyledHeroTitle>
           <Link to="/pizza" id="order-pizza">
-            <StyledHeroButton>Order Pizza</StyledHeroButton>
+            <StyledHeroButton data-cy="order-pizza-button">
+              Order Pizza
+            </StyledHeroButton>
           </Link>
         </StyledHeroTitleContainer>
       </StyledHero>
@@ -150,7 +182,9 @@ export default function Mainpage() {
             <StyledRestaurantTags>20-30 Min</StyledRestaurantTags>
             <StyledRestaurantTags>$5.99 Delivery Fee</StyledRestaurantTags>
           </StyledRestaurantTagsContainer>
-          <StyledRestaurantButton>Go to Restaurant</StyledRestaurantButton>
+          <Link to="/empty" id="empty">
+            <StyledRestaurantButton>Go to Restaurant</StyledRestaurantButton>
+          </Link>
         </StyledRestaurantContainer>
 
         <StyledRestaurantContainer>
@@ -167,7 +201,7 @@ export default function Mainpage() {
             <StyledRestaurantTags>$4.99 Delivery Fee</StyledRestaurantTags>
           </StyledRestaurantTagsContainer>
           <Link to="/pizza" id="order-pizza">
-            <StyledRestaurantButton>Go to Restaurant</StyledRestaurantButton>
+            <StyledPizzaHutButton>Go to Restaurant</StyledPizzaHutButton>
           </Link>
         </StyledRestaurantContainer>
 
@@ -184,7 +218,9 @@ export default function Mainpage() {
             <StyledRestaurantTags>10-20 Min</StyledRestaurantTags>
             <StyledRestaurantTags>$3.99 Delivery Fee</StyledRestaurantTags>
           </StyledRestaurantTagsContainer>
-          <StyledRestaurantButton>Go to Restaurant</StyledRestaurantButton>
+          <Link to="/empty" id="empty">
+            <StyledRestaurantButton>Go to Restaurant</StyledRestaurantButton>
+          </Link>
         </StyledRestaurantContainer>
 
         <StyledRestaurantContainer>
@@ -200,7 +236,9 @@ export default function Mainpage() {
             <StyledRestaurantTags>20-30 Min</StyledRestaurantTags>
             <StyledRestaurantTags>$5.99 Delivery Fee</StyledRestaurantTags>
           </StyledRestaurantTagsContainer>
-          <StyledRestaurantButton>Go to Restaurant</StyledRestaurantButton>
+          <Link to="/empty" id="empty">
+            <StyledRestaurantButton>Go to Restaurant</StyledRestaurantButton>
+          </Link>
         </StyledRestaurantContainer>
 
         <StyledRestaurantContainer>
@@ -210,13 +248,15 @@ export default function Mainpage() {
           />
           <StyledRestaurantName>Nando's</StyledRestaurantName>
           <StyledRestaurantInfoTexts>
-            $ - Healthy - Falafel
+            $ - Healthy - Chicken
           </StyledRestaurantInfoTexts>
           <StyledRestaurantTagsContainer>
             <StyledRestaurantTags>30-45 Min</StyledRestaurantTags>
             <StyledRestaurantTags>$4.99 Delivery Fee</StyledRestaurantTags>
           </StyledRestaurantTagsContainer>
-          <StyledRestaurantButton>Go to Restaurant</StyledRestaurantButton>
+          <Link to="/empty" id="empty">
+            <StyledRestaurantButton>Go to Restaurant</StyledRestaurantButton>
+          </Link>
         </StyledRestaurantContainer>
 
         <StyledRestaurantContainer>
@@ -232,7 +272,9 @@ export default function Mainpage() {
             <StyledRestaurantTags>30-45 Min</StyledRestaurantTags>
             <StyledRestaurantTags>$4.99 Delivery Fee</StyledRestaurantTags>
           </StyledRestaurantTagsContainer>
-          <StyledRestaurantButton>Go to Restaurant</StyledRestaurantButton>
+          <Link to="/empty" id="empty">
+            <StyledRestaurantButton>Go to Restaurant</StyledRestaurantButton>
+          </Link>
         </StyledRestaurantContainer>
       </StyledAllRestaurantsContainer>
     </StyledMainPageContainer>
