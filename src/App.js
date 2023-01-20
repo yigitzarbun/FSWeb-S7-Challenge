@@ -52,7 +52,7 @@ const App = () => {
     address: "",
     orderQuantity: "1",
   });
-
+  console.log(formData);
   // Admin Order Data
   const [adminOrderDetails, setAdminOrderDetails] = useState("");
 

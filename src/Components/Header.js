@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
+import "./../App.css";
 
 const StyledHeaderContainer = styled.div`
   display: flex;
@@ -63,17 +64,17 @@ export default function Header() {
       <Link to="/">
         <StyledHeaderLogo>Tech Food</StyledHeaderLogo>
       </Link>
-      <StyledHeaderLinksContainer>
-        <Link to="/">
-          <StyledHeaderLinks>Home</StyledHeaderLinks>
-        </Link>
-        <Link to="/pizza">
-          <StyledHeaderLinks>My Order</StyledHeaderLinks>
-        </Link>
-        <Link to="/basket">
-          <StyledHeaderLinks>Basket</StyledHeaderLinks>
-        </Link>
-      </StyledHeaderLinksContainer>
+      <nav className="nav">
+        <NavLink exact to="/" className="nav-link" activeClassName="selected">
+          Home
+        </NavLink>
+        <NavLink to="/pizza" className="nav-link" activeClassName="selected">
+          My Order
+        </NavLink>
+        <NavLink to="/basket" className="nav-link" activeClassName="selected">
+          Basket
+        </NavLink>
+      </nav>
     </StyledHeaderContainer>
   );
 }

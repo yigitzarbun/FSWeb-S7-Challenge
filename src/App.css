@@ -1,0 +1,45 @@
+.nav {
+  display: flex;
+  column-gap: 2vw;
+  padding: 1rem;
+}
+
+.nav-link {
+  background-color: white;
+  border: 0.3rem solid #eb455f;
+  padding: 1vh 3vw;
+  text-decoration: none;
+  color: black;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+.nav-link.selected {
+  color: white;
+  border: 0.3rem solid black;
+  border-radius: 20px;
+  padding: 1vh 3vw;
+  font-weight: bold;
+  text-decoration: underline white;
+  background-color: #eb455f;
+  text-decoration: none;
+}
+
+@media (max-width: 575px) {
+  .nav {
+    display: flex;
+    flex-direction: column;
+    row-gap: 2vh;
+    text-align: center;
+  }
+  .nav-link {
+    border: 0.1rem solid #eb455f;
+    font-weight: normal;
+    font-size: 0.8rem;
+  }
+  .nav-link.selected {
+    border: 0.1rem solid black;
+    font-weight: normal;
+    font-size: 0.8rem;
+  }
+}

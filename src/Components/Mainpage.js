@@ -133,7 +133,7 @@ const StyledRestaurantButton = styled.button`
     background-color: #eb455f;
     color: white;
     font-weight: bold;
-    border: 0.3rem solid black;
+    border: 0.2rem solid black;
   }
 `;
 
@@ -148,7 +148,7 @@ const StyledPizzaHutButton = styled.button`
     background-color: #eb455f;
     color: white;
     font-weight: bold;
-    border: 0.3rem solid black;
+    border: 0.2rem solid black;
   }
 `;
 export default function Mainpage() {

@@ -6,9 +6,13 @@ const StyledFormPageContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 50%;
+  max-width: 700px;
   margin: 0 auto 2vh auto;
   border: 0.3rem solid #eb455f;
   border-radius: 20px;
+  @media (max-width: 700px) {
+    width: 90%;
+  }
 `;
 
 const StyledTopTitleContainer = styled.div`
@@ -194,11 +198,8 @@ const StyledSauceContainer = styled.div`
   @media (max-width: 903px) {
     width: 45%;
   }
-  @media (max-width: 750px) {
-    width: 60%;
-  }
-  @media (max-width: 450px) {
-    width: 100%;
+  @media (max-width: 760px) {
+    width: 40%;
   }
 `;
 
@@ -321,6 +322,7 @@ export default function Form(props) {
                   id="original-red"
                   name="sauce"
                   onChange={handleChange}
+                  checked={formData.sauce === "original-red"}
                   value="original-red"
                 ></input>
                 <label htmlFor="original-red">Original Red</label>
@@ -333,6 +335,7 @@ export default function Form(props) {
                   name="sauce"
                   onChange={handleChange}
                   value="garlic-ranch"
+                  checked={formData.sauce === "garlic-ranch"}
                 ></input>
                 <label htmlFor="garlic-ranch">Garlic Ranch</label>
               </StyledSauceOption>
@@ -344,6 +347,7 @@ export default function Form(props) {
                   name="sauce"
                   onChange={handleChange}
                   value="bbq-sauce"
+                  checked={formData.sauce === "bbq-sauce"}
                 ></input>
                 <label htmlFor="bbq-sauce">BBQ Sauce</label>
               </StyledSauceOption>
@@ -355,6 +359,7 @@ export default function Form(props) {
                   name="sauce"
                   onChange={handleChange}
                   value="spinach-alfredo"
+                  checked={formData.sauce === "spinach-alfredo"}
                 ></input>
                 <label htmlFor="spinach-alfredo">Spinach Alfredo</label>
               </StyledSauceOption>
